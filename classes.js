@@ -1,8 +1,14 @@
 #!/usr/bin/node
 
 function HashMap() {
-	let loadFactor;
-	let capacity;
+	debugger;
+	let capacity = 16;
+	let loadFactor = capacity * 0.8;
+	let hashArray = [];
+
+	for (let i = 0; i < capacity; i++) {
+		hashArray.push({});
+	}
 
 	const hash = function getHashCode(key) {
 		let hashCode = 0;
@@ -14,5 +20,8 @@ function HashMap() {
 		return hashCode;
 	};
 
-	return { hash, capacity, loadFactor };
+	return { set, hashArray };
 }
+
+const hashTable = HashMap();
+console.log(hashTable);
