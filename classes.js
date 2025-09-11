@@ -23,10 +23,10 @@ function HashMap() {
 	const set = function setKey(key, value) {
 		let hashCode = hash(key);
 		if (Object.hasOwn(hashArray[hashCode], 'head')) {
-			hashArray[hashCode].head = Node(value);
+			hashArray[hashCode].head = Node(key, value);
 		} else {
 			const list = linkedList();
-			hashArray[hashCode] = list.append(value);
+			hashArray[hashCode] = list.append(key, value);
 		}
 	};
 
