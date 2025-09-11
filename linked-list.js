@@ -1,9 +1,9 @@
 export function linkedList() {
 	let head;
 	const append = (value, nextNode) => {
-		debugger;
 		if (head == undefined) {
-			return (head = Node(value, nextNode));
+			head = Node(value, nextNode);
+			return { head };
 		}
 		head.nextNode = Node(value, nextNode);
 		return { head };
@@ -11,6 +11,6 @@ export function linkedList() {
 	return { append };
 }
 
-function Node(value = null, nextNode = null) {
+export function Node(value = null, nextNode = null) {
 	return { value, nextNode };
 }
