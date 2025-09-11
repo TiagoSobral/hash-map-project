@@ -30,11 +30,25 @@ function HashMap() {
 		}
 	};
 
-	return { set, hashArray };
+	const get = function getValue(key) {
+		let hashCode = hash(key);
+		if (Object.hasOwn(hashArray[hashCode], 'head')) {
+			let temp = hashArray[hashCode].head;
+			let found = null;
+			do {
+				if (temp[key]) return (found = temp[key]);
+				temp = temp.nextNode;
+			} while (temp.nextNode != null);
+			return found;
+		}
+	};
+
+	return { set, get, hashArray };
 }
 
 const hashTable = HashMap();
 hashTable.set('apple', 'red');
 hashTable.set('apple', 'yellow');
 hashTable.set('carrot', 'orange');
+console.log(hashTable.get('apple'));
 console.dir(hashTable, { depth: null });
