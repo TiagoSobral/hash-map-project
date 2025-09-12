@@ -22,12 +22,17 @@ function HashMap() {
 
 	const set = function setKey(key, value) {
 		const hashCode = hash(key);
-		if (Object.hasOwn(hashArray[hashCode], 'head')) {
-			hashArray[hashCode].head = Node(key, value);
-		} else {
-			const list = linkedList();
-			hashArray[hashCode] = list.append(key, value);
+		let temp = hashArray[hashCode];
+		if (Object.hasOwn(temp, 'head')) {
+			temp = temp.head;
+			while (temp.nextNode != null && temp[key]) {
+				temp = temp.nextNode;
+			}
+			if (temp[key]) return (temp[key] = value);
+			return (temp.nextNode = Node(key, value));
 		}
+		const list = linkedList();
+		return (hashArray[hashCode] = list.append(key, value));
 	};
 
 	const get = function getValue(key) {
@@ -55,7 +60,6 @@ function HashMap() {
 	};
 
 	const remove = function removeEntry(key) {
-		debugger;
 		if (!has(key)) return false;
 		const hashCode = hash(key);
 		let curr = hashArray[hashCode].head;
@@ -75,14 +79,22 @@ function HashMap() {
 		return false;
 	};
 
+	// const length = function getLength() {
+	// 	debugger;
+	// 	hashArray.forEach((bucket) => {
+	// 		let keys = Object.entries(bucket);
+	// 	});
+	// };
+
 	return { set, get, has, remove, hashArray };
 }
 
 const hashTable = HashMap();
 hashTable.set('apple', 'red');
 hashTable.set('apple', 'yellow');
+hashTable.set('elppa', 'blue');
 hashTable.set('carrot', 'orange');
-console.log(hashTable.get('apple'));
+// console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
-console.log(hashTable.remove('apple'));
+// console.log(hashTable.remove('apple'));
 console.dir(hashTable, { depth: null });
