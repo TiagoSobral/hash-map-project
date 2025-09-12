@@ -44,7 +44,6 @@ function HashMap() {
 	};
 
 	const has = function hasKey(key) {
-		debugger;
 		const hashCode = hash(key);
 		let temp = hashArray[hashCode].head;
 		if (temp == undefined) return false;
@@ -55,7 +54,24 @@ function HashMap() {
 		return false;
 	};
 
-	return { set, get, has, hashArray };
+	const remove = function removeEntry(key) {
+		if (!has(key)) return false;
+		const hashCode = hash(key);
+		let curr = hashArray[hashCode].head;
+		let next = curr.nextNode;
+		while (!Object.hasOwn(curr, key) && next != null) {
+			curr = next;
+			next = next.nextNode;
+		}
+		if (next == null) {
+			curr.nextNode = null;
+		} else {
+			curr.nextNode = next.nextNode;
+		}
+		return true;
+	};
+
+	return { set, get, has, remove, hashArray };
 }
 
 const hashTable = HashMap();
@@ -64,4 +80,5 @@ hashTable.set('apple', 'yellow');
 hashTable.set('carrot', 'orange');
 console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
+console.log(hashTable.remove('apple'));
 console.dir(hashTable, { depth: null });
