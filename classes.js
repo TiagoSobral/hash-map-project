@@ -55,20 +55,24 @@ function HashMap() {
 	};
 
 	const remove = function removeEntry(key) {
+		debugger;
 		if (!has(key)) return false;
 		const hashCode = hash(key);
 		let curr = hashArray[hashCode].head;
 		let next = curr.nextNode;
-		while (!Object.hasOwn(curr, key) && next != null) {
-			curr = next;
-			next = next.nextNode;
-		}
-		if (next == null) {
-			curr.nextNode = null;
-		} else {
-			curr.nextNode = next.nextNode;
-		}
-		return true;
+		do {
+			if (Object.hasOwn(curr, key) && next == null) {
+				delete hashArray[hashCode].head;
+				return true;
+			} else if (Object.hasOwn(curr, key) && next != null) {
+				curr.nextNode = next.nextNode;
+				return true;
+			} else {
+				curr = next;
+				next = next.nextNode;
+			}
+		} while (next != null);
+		return false;
 	};
 
 	return { set, get, has, remove, hashArray };
