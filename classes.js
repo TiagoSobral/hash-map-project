@@ -60,15 +60,15 @@ function HashMap() {
 	};
 
 	const remove = function removeEntry(key) {
-		if (!has(key)) return false;
 		const hashCode = hash(key);
+		if (hashCode == undefined) return false;
 		let curr = hashArray[hashCode].head;
 		let next = curr.nextNode;
 		do {
-			if (Object.hasOwn(curr, key) && next == null) {
+			if (curr[key] && next == null) {
 				delete hashArray[hashCode].head;
 				return true;
-			} else if (Object.hasOwn(curr, key) && next != null) {
+			} else if (curr[key] && next != null) {
 				curr.nextNode = next.nextNode;
 				return true;
 			} else {
@@ -79,14 +79,22 @@ function HashMap() {
 		return false;
 	};
 
-	// const length = function getLength() {
-	// 	debugger;
-	// 	hashArray.forEach((bucket) => {
-	// 		let keys = Object.entries(bucket);
-	// 	});
-	// };
+	const length = function getLength() {
+		debugger;
+		let storedKeys = 0;
+		hashArray.forEach((bucket) => {
+			let curr = bucket.head;
+			if (curr != undefined) {
+				while (curr != undefined) {
+					storedKeys += 1;
+					curr = curr.nextNode;
+				}
+			}
+		});
+		return storedKeys;
+	};
 
-	return { set, get, has, remove, hashArray };
+	return { set, get, has, remove, length, hashArray };
 }
 
 const hashTable = HashMap();
@@ -94,7 +102,8 @@ hashTable.set('apple', 'red');
 hashTable.set('apple', 'yellow');
 hashTable.set('elppa', 'blue');
 hashTable.set('carrot', 'orange');
-// console.log(hashTable.get('apple'));
+console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
-// console.log(hashTable.remove('apple'));
+console.log(hashTable.remove('apple'));
+console.log(hashTable.length());
 console.dir(hashTable, { depth: null });
