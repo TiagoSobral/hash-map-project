@@ -80,7 +80,6 @@ function HashMap() {
 	};
 
 	const length = function getLength() {
-		debugger;
 		let storedKeys = 0;
 		hashArray.forEach((bucket) => {
 			let curr = bucket.head;
@@ -94,7 +93,15 @@ function HashMap() {
 		return storedKeys;
 	};
 
-	return { set, get, has, remove, length, hashArray };
+	const clear = function clearMap() {
+		hashArray.forEach((bucket) => {
+			if (bucket.head != undefined) {
+				delete bucket.head;
+			}
+		});
+	};
+
+	return { set, get, has, remove, length, clear, hashArray };
 }
 
 const hashTable = HashMap();
@@ -106,4 +113,5 @@ console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
 console.log(hashTable.remove('apple'));
 console.log(hashTable.length());
+hashTable.clear();
 console.dir(hashTable, { depth: null });
