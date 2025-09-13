@@ -1,7 +1,7 @@
 #!/usr/bin/node
 import { linkedList, Node } from './linked-list.js';
 
-function HashMap() {
+export function HashMap() {
 	let capacity = 16;
 	let loadFactor = capacity * 0.8;
 	let hashArray = [];
@@ -154,18 +154,3 @@ function HashMap() {
 		hashArray,
 	};
 }
-
-const hashTable = HashMap();
-hashTable.set('apple', 'red');
-hashTable.set('apple', 'yellow');
-hashTable.set('elppa', 'blue');
-hashTable.set('carrot', 'orange');
-console.log(hashTable.get('apple'));
-console.log(hashTable.has('apple'));
-console.log(hashTable.remove('apple'));
-console.log(hashTable.length());
-console.log(hashTable.keys());
-console.log(hashTable.values());
-console.log(hashTable.entries());
-hashTable.clear();
-console.dir(hashTable.hashArray, { depth: null });
