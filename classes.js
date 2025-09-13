@@ -127,7 +127,32 @@ function HashMap() {
 		return arrayOfValues;
 	};
 
-	return { set, get, has, remove, length, clear, keys, values, hashArray };
+	const entries = function getEntries() {
+		let arrayOfEntries = [];
+		hashArray.forEach((bucket) => {
+			if (bucket.head == undefined) return;
+			let curr = bucket.head;
+			while (curr != undefined) {
+				let [first] = Object.entries(curr);
+				arrayOfEntries.push(first);
+				curr = curr.nextNode;
+			}
+		});
+		return arrayOfEntries;
+	};
+
+	return {
+		set,
+		get,
+		has,
+		remove,
+		length,
+		clear,
+		keys,
+		values,
+		entries,
+		hashArray,
+	};
 }
 
 const hashTable = HashMap();
@@ -139,6 +164,8 @@ console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
 console.log(hashTable.remove('apple'));
 console.log(hashTable.length());
-// hashTable.clear();
 console.log(hashTable.keys());
+console.log(hashTable.values());
+console.log(hashTable.entries());
+hashTable.clear();
 console.dir(hashTable.hashArray, { depth: null });
