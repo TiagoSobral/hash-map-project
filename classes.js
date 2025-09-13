@@ -113,7 +113,21 @@ function HashMap() {
 		return arrayOfKeys;
 	};
 
-	return { set, get, has, remove, length, clear, keys, hashArray };
+	const values = function getValues() {
+		let arrayOfValues = [];
+		hashArray.forEach((bucket) => {
+			if (bucket.head == undefined) return;
+			let curr = bucket.head;
+			while (curr != undefined) {
+				let [first] = Object.values(curr);
+				arrayOfValues.push(first);
+				curr = curr.nextNode;
+			}
+		});
+		return arrayOfValues;
+	};
+
+	return { set, get, has, remove, length, clear, keys, values, hashArray };
 }
 
 const hashTable = HashMap();
