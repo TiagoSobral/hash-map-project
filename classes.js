@@ -3,24 +3,30 @@ import { linkedList, Node } from './linked-list.js';
 
 export function HashMap() {
 	let capacity = 16;
-	let loadFactor = capacity * 0.8;
+	let loadFactor = Math.round(capacity * 0.75);
 	let hashArray = [];
 
-	for (let i = 0; i < capacity; i++) {
-		hashArray.push({});
-	}
+	const grow = function growMap(size = capacity) {
+		for (let i = 0; i < size; i++) {
+			hashArray.push({});
+		}
+	};
 
 	const hash = function getHashCode(key) {
 		let hashCode = 0;
 		const primeNumber = 31;
 		for (let i = 0; i < key.length; i++) {
 			hashCode = primeNumber * hashCode + key.charCodeAt(i);
-			hashCode %= 16;
+			hashCode %= capacity;
 		}
 		return hashCode;
 	};
 
 	const set = function setKey(key, value) {
+		if (length() == loadFactor) {
+			grow(capacity);
+			capacity = capacity * 2;
+		}
 		const hashCode = hash(key);
 		let temp = hashArray[hashCode];
 		if (Object.hasOwn(temp, 'head')) {
@@ -140,6 +146,8 @@ export function HashMap() {
 		});
 		return arrayOfEntries;
 	};
+
+	grow();
 
 	return {
 		set,
