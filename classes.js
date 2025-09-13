@@ -83,11 +83,10 @@ function HashMap() {
 		let storedKeys = 0;
 		hashArray.forEach((bucket) => {
 			let curr = bucket.head;
-			if (curr != undefined) {
-				while (curr != undefined) {
-					storedKeys += 1;
-					curr = curr.nextNode;
-				}
+			if (curr == undefined) return;
+			while (curr != undefined) {
+				storedKeys += 1;
+				curr = curr.nextNode;
 			}
 		});
 		return storedKeys;
@@ -95,13 +94,26 @@ function HashMap() {
 
 	const clear = function clearMap() {
 		hashArray.forEach((bucket) => {
-			if (bucket.head != undefined) {
-				delete bucket.head;
-			}
+			if (bucket.head == undefined) return;
+			delete bucket.head;
 		});
 	};
 
-	return { set, get, has, remove, length, clear, hashArray };
+	const keys = function getKeys() {
+		let arrayOfKeys = [];
+		hashArray.forEach((bucket) => {
+			if (bucket.head == undefined) return;
+			let curr = bucket.head;
+			while (curr != undefined) {
+				let [first] = Object.keys(curr);
+				arrayOfKeys.push(first);
+				curr = curr.nextNode;
+			}
+		});
+		return arrayOfKeys;
+	};
+
+	return { set, get, has, remove, length, clear, keys, hashArray };
 }
 
 const hashTable = HashMap();
@@ -113,5 +125,6 @@ console.log(hashTable.get('apple'));
 console.log(hashTable.has('apple'));
 console.log(hashTable.remove('apple'));
 console.log(hashTable.length());
-hashTable.clear();
-console.dir(hashTable, { depth: null });
+// hashTable.clear();
+console.log(hashTable.keys());
+console.dir(hashTable.hashArray, { depth: null });
