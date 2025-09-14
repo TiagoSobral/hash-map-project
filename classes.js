@@ -70,6 +70,7 @@ export function HashMap() {
 	const has = function hasKey(key) {
 		const hashCode = hash(key);
 		let temp = hashArray[hashCode].head;
+		// if there are no elements no need to look further
 		if (temp == undefined) return false;
 		do {
 			if (temp[key]) return true;
@@ -79,21 +80,26 @@ export function HashMap() {
 	};
 
 	const remove = function removeEntry(key) {
+		// uses has method to return in case of the value not existing
 		if (!has(key)) return false;
 		const hashCode = hash(key);
 		let curr = hashArray[hashCode].head;
 		let prev = null;
 		do {
 			if (curr[key]) {
+				// checks if is the only element
 				if (prev == null && curr.nextNode == null)
 					return delete hashArray[hashCode].head;
+				// checks if its the first element
 				else if (prev == null && curr.nextNode != null)
 					return (hashArray[hashCode].head = curr.nextNode);
+				// checks middle elements
 				else return (prev.nextNode = curr.nextNode);
 			}
 			prev = curr;
 			curr = curr.nextNode;
 		} while (curr.nextNode != undefined);
+		// if no conditions are met it means its last
 		prev.nextNode = null;
 		return true;
 	};
