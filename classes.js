@@ -24,12 +24,15 @@ export function HashMap() {
 
 	const set = function setKey(key, value) {
 		if (length() == loadFactor) {
+			/* grow method increases the array by doubling it*/
 			grow(capacity);
 			capacity *= 2;
+			/* update is to display the keys in the new sized array*/
 			update();
 		}
 		const hashCode = hash(key);
 		let temp = hashArray[hashCode];
+		// When the bucket has values
 		if (Object.hasOwn(temp, 'head')) {
 			temp = temp.head;
 			while (temp.nextNode != undefined) {
@@ -38,6 +41,7 @@ export function HashMap() {
 			}
 			return (temp.nextNode = Node(key, value));
 		}
+		// In case of no value inside the bucket, a list with the value is created
 		return (hashArray[hashCode] = linkedList().append(key, value));
 	};
 
