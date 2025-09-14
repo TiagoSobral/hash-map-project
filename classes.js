@@ -41,8 +41,8 @@ export function HashMap() {
 			}
 			return (temp.nextNode = Node(key, value));
 		}
-		// In case of no value inside the bucket, a list with the value is created
-		return (hashArray[hashCode] = linkedList().append(key, value));
+		// In case of no value inside the bucket, a list with the 'key: value' pair is created
+		return (hashArray[hashCode] = linkedList(key, value));
 	};
 
 	const update = function updateAfterGrow() {
