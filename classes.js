@@ -19,6 +19,9 @@ export function HashMap() {
 			hashCode = primeNumber * hashCode + key.charCodeAt(i);
 			hashCode %= capacity;
 		}
+		if (hashCode < 0 || hashCode >= hashArray.length) {
+			throw new Error('Trying to access index out of bounds');
+		}
 		return hashCode;
 	};
 
@@ -180,4 +183,9 @@ export function HashMap() {
 		entries,
 		hashArray,
 	};
+}
+
+export function HashSet() {
+	let methods = HashMap();
+	return { methods };
 }
