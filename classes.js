@@ -25,20 +25,29 @@ export function HashMap() {
 	const set = function setKey(key, value) {
 		if (length() == loadFactor) {
 			grow(capacity);
-			capacity = capacity * 2;
+			capacity *= 2;
+			update();
 		}
 		const hashCode = hash(key);
 		let temp = hashArray[hashCode];
 		if (Object.hasOwn(temp, 'head')) {
 			temp = temp.head;
-			while (temp.nextNode != null && temp[key]) {
+			while (temp.nextNode != undefined) {
+				if (temp[key]) return (temp[key] = value);
 				temp = temp.nextNode;
 			}
-			if (temp[key]) return (temp[key] = value);
 			return (temp.nextNode = Node(key, value));
 		}
-		const list = linkedList();
-		return (hashArray[hashCode] = list.append(key, value));
+		return (hashArray[hashCode] = linkedList().append(key, value));
+	};
+
+	const update = function updateAfterGrow() {
+		let getEntries = entries();
+		clear();
+		for (let i = 0; i < getEntries.length; i++) {
+			let [key, value] = getEntries[i];
+			set(key, value);
+		}
 	};
 
 	const get = function getValue(key) {
@@ -61,28 +70,28 @@ export function HashMap() {
 		do {
 			if (temp[key]) return true;
 			temp = temp.nextNode;
-		} while (temp.nextNode != null);
+		} while (temp != undefined);
 		return false;
 	};
 
 	const remove = function removeEntry(key) {
+		if (!has(key)) return false;
 		const hashCode = hash(key);
-		if (hashCode == undefined) return false;
 		let curr = hashArray[hashCode].head;
-		let next = curr.nextNode;
+		let prev = null;
 		do {
-			if (curr[key] && next == null) {
-				delete hashArray[hashCode].head;
-				return true;
-			} else if (curr[key] && next != null) {
-				curr.nextNode = next.nextNode;
-				return true;
-			} else {
-				curr = next;
-				next = next.nextNode;
+			if (curr[key]) {
+				if (prev == null && curr.nextNode == null)
+					return delete hashArray[hashCode].head;
+				else if (prev == null && curr.nextNode != null)
+					return (hashArray[hashCode].head = curr.nextNode);
+				else return (prev.nextNode = curr.nextNode);
 			}
-		} while (next != null);
-		return false;
+			prev = curr;
+			curr = curr.nextNode;
+		} while (curr.nextNode != undefined);
+		prev.nextNode = null;
+		return true;
 	};
 
 	const length = function getLength() {
